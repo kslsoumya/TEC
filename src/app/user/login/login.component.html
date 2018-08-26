@@ -1,0 +1,69 @@
+<ngx-spinner
+bdColor="rgba(51,51,51,0.8)"
+size="medium"
+color="#fff"
+type="ball-scale-multiple">
+<p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
+
+
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <h3 style="color:white">TheEventCorp</h3>
+
+<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
+  aria-expanded="false" aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+             Options
+            </a>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+            
+            <a class="dropdown-item"  href='http://theeventcorp.readme.themeanstackpro.com'>
+              <strong style="font-style: italic"> Readme</strong>
+            </a>
+            <a class="dropdown-item"  href='http://theeventcorp.docs.themeanstackpro.com'>
+              <strong style="font-style: italic"> Docs</strong>
+            </a>
+              <!-- <a class="dropdown-item"  routerLink = "/signup">
+                <strong style="font-style: italic">SignUp</strong>
+                &nbsp;&nbsp;<i class="fa fa-user-plus cursorPointer" style="color:black" aria-hidden="true"></i>
+              </a> -->
+          </div>
+  </ul>
+</div>
+</nav>
+
+<div class="container" style="text-align: center">
+  <h3 class=" p-3 loginHeading">Login</h3>
+  <div class="row">
+    <div class="col-12 col-md-6 mx-auto shadow p-3 mb-5 bg-white rounded">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a class="nav-link active" routerLink="/login">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink = '/signup'>SignUp</a>
+            </li>
+          </ul>
+      <form class="addForm" #userLogin="ngForm" (ngSubmit)="loginUser()">
+          <mat-form-field class="form-field">
+              <input matInput type ="email" placeholder="Email" name="emailId" [(ngModel)]="emailId" required>
+            </mat-form-field>
+
+            <mat-form-field class="form-field">
+                <input matInput placeholder="Enter your password" name="password" [(ngModel)]="password"
+                [type]="hide ? 'password' : 'text'" required>
+                <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>  
+               </mat-form-field>
+        <button  class="btn btn-outline-primary ml-3" type="submit" [disabled]='!userLogin.form.valid'>Login</button>
+        &nbsp; &nbsp;
+        <button  class="btn btn-outline-danger" routerLink ="/home">Cancel</button>
+        <a routerLink ="/forgotPwd"  style="float: right">Forgot Password?</a>
+      </form>
+    </div>
+  </div>
+</div>

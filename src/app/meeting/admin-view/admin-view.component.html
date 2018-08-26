@@ -1,0 +1,119 @@
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <h3 style="color:white">TheEventCorp</h3>
+
+<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
+  aria-expanded="false" aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarNavDropdown">
+  <ul class="navbar-nav">
+    </ul>
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {{userName}}
+            </a>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+            
+            <a class="dropdown-item"  href='http://theeventcorp.readme.themeanstackpro.com'>
+              <strong style="font-style: italic">Readme</strong>
+            </a>
+            <a class="dropdown-item"  href='http://theeventcorp.docs.themeanstackpro.com'>
+              <strong style="font-style: italic">Docs</strong>
+            </a>
+            <a class="dropdown-item"  (click) = "logOut()">
+                <strong style="font-style: italic"> LogOut</strong>
+                &nbsp;&nbsp;<i class="fa fa-power-off cursorPointer" style="color:black" aria-hidden="true"></i>
+              </a>
+          </div>
+
+  </ul>
+</div>
+</nav>
+<br/>
+
+<ng-template #loading>
+    <ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-scale-multiple">
+ <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
+  </ng-template>
+<div class="container"  *ngIf ='usersList;else loading' >
+  <div class="row" style ="margin-top:5vh;">
+    <div class ="col-md-4 " >
+            <div class="card shadow   mx-auto p-3 mb-5 bg-white rounded">
+                <div class="data">
+                  <div class ="count"> 
+                      <h3>{{meetingsList.length}}</h3> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <i class="fa fa-calendar fa-lg"  style = "color:#cb2c2c" aria-hidden="true"></i>
+
+                    </div>
+                    <div class ="text">
+                        <hr>Meetings Planned
+                    </div>
+              
+                </div>
+          </div>
+          </div>
+    <div class ="col-md-4 ">
+        <div class="card shadow   mx-auto p-3 mb-5 bg-white rounded">
+            <div class="data">
+              <div class ="count"> 
+                  <h3>{{onlineUsersList.length}}</h3> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <i class="fa fa-users fa-lg"  style ="color:green" aria-hidden="true"></i>
+                </div>
+                <div class ="text">
+                    <hr>Online Users
+                </div>
+          
+            </div>
+      </div>
+    </div>
+    <div class ="col-md-4">
+        <div class="card shadow   mx-auto p-3 mb-5 bg-white rounded">
+          <div class="data">
+            <div class ="count"> 
+                <h3>{{usersList.length}}</h3> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <i class="fa fa-users fa-lg" style = "color:#0000ffa1" aria-hidden="true"></i>
+              </div>
+              <div class ="text">
+                  <hr>Available Users
+              </div>
+        
+          </div>
+    </div>
+    </div>
+    </div>
+    <div class ="row" style = "padding-left : 3vw;">
+        <table class="table" style ="text-align:center">
+            <thead class="thead-light">
+              <tr >
+                <th scope="col">SNo.</th>
+                <th scope="col">UserName</th>
+                <th scope="col">Status &nbsp;&nbsp;&nbsp; <i class="fa fa-refresh" title ="Refresh Status" style ="cursor: pointer"
+                  (click) = "refreshStatus()" aria-hidden="true"></i>
+                </th>
+              </tr>
+            </thead>
+            <tbody  *ngFor = 'let user of usersList| paginate: { itemsPerPage: 5, currentPage: p };index as i'>
+              <tr (click) = "openCalendar(user.userId)" class ="cursorPointer">
+                <th scope="row">{{i+1}}</th>
+                <td> {{user.firstName+''+user.lastName}}</td>
+                <td><i class="fa fa-circle"  [ngClass] = "{'online' : user.isOnline,'offline': !user.isOnline}"  aria-hidden="true"></i></td>
+              </tr>
+            </tbody>
+          </table>
+          <pagination-controls (pageChange)="p = $event"></pagination-controls>
+
+      <!-- <div class="card" *ngFor = 'let user of usersList'>
+          <div class="card-body" (click) = "openCalendar(user.userId)">
+            {{user.firstName+''+user.lastName}} 
+            <i class="fa fa-circle" aria-hidden="true"></i>
+
+          </div>
+        </div> -->
+  </div>
+</div>

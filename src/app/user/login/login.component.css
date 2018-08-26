@@ -1,0 +1,28 @@
+.addForm {
+    text-align: center;
+    border-left: 5px rgba(99, 190, 204, 0.91) solid;
+    padding-left: 1.5vw;
+    text-align: center;
+    margin-top : 8vh;
+  }
+
+  .form-field {
+  width: 100%;
+  }
+
+  .row {
+    padding-top:7vh;
+    height: 64vh;
+
+  }
+  .loginHeading {
+    /* color: rgb(112, 10, 207); */
+    color : rgba(99, 190, 204, 0.91);
+    font-style: italic;
+    font-weight: bold;
+    text-decoration: underline;
+  }
+
+  .cursor {
+    cursor: pointer;
+  }

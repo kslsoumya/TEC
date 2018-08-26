@@ -1,0 +1,31 @@
+.card {
+    border :none;
+    width :10rem;
+    height : 7rem;
+    border-radius: 3rem;
+}
+
+.fa {
+    padding-top: 2vh;
+}
+hr {
+    margin : 0;
+}
+td  .fa-refresh{
+    text-align: center;
+    /* cursor: pointer; */
+}
+.cursorPointer {
+    cursor: pointer;
+}
+
+.count {
+    display: inline-flex;
+}
+
+.online {
+    color:  #37f137;
+}
+.offline {
+    color : grey;
+}

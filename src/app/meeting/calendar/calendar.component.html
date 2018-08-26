@@ -1,0 +1,283 @@
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <h3 style="color:white">TheEventCorp</h3>
+
+<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
+  aria-expanded="false" aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarNavDropdown">
+  <ul class="navbar-nav">
+    </ul>
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {{userName}}
+            </a>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+            
+            <a class="dropdown-item"  href='http://theeventcorp.readme.themeanstackpro.com'>
+              <strong style="font-style: italic"> Readme</strong>
+            </a>
+            <a class="dropdown-item"  href='http://theeventcorp.docs.themeanstackpro.com'>
+              <strong style="font-style: italic"> Docs</strong>
+            </a>
+            <a class="dropdown-item"  (click) = "logOut()">
+                <strong style="font-style: italic"> LogOut</strong>
+                &nbsp;&nbsp;<i class="fa fa-power-off cursorPointer" style="color:black" aria-hidden="true"></i>
+              </a>
+          </div>
+  </ul>
+</div>
+</nav>
+<br/>
+
+
+<ng-template #modalContent let-close="close">
+    <div class="modal-header">
+      <h5 class="modal-title">{{ modalData.event?.title }}</h5>
+      <h5 class ="ml-auto"><small>Created By: </small>{{modalData.event.meta?.event.admin }}</h5>
+      <button type="button" class="close" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class ="row">
+      <div class ="col-md-6">
+        Start :
+        <pre>{{ modalData.event?.start|date:'medium'}}</pre>
+      </div>
+      <div class ="col-md-6">
+        End:
+        <pre>{{ modalData.event?.end|date:'medium' }}</pre>
+      </div>
+    </div>
+    <div>Description : 
+      <pre>{{ modalData.event.meta?.event.description }} </pre>
+    </div>
+    <div>Location : 
+        <pre>{{ modalData.event.meta?.event.location}}</pre>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-secondary" (click)="close()">OK</button>
+    </div>
+  </ng-template>
+  
+  <ng-template #loading>
+    <div class="text-center">
+      <i class="fa fa-spin fa-spinner fa-5x"></i>
+      <br>
+      Loading events...
+    </div>
+  </ng-template>
+  
+
+  <ng-template #createModal let-close="close">
+    <div class="modal-header" style  ="text-align:center">
+      <h5 class="modal-title" *ngIf = "isCreate" >Plan a Meeting</h5>
+      <h5 class="modal-title" *ngIf = "isEdit">Update  Meeting</h5>
+        <button type="button" class="close" (click)="close()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <!-- <form> -->
+    <div class="modal-body">
+     
+        <input
+        type="text"
+        placeholder="Event Title"
+        class="form-control"
+        [(ngModel)]="title"
+        (keyup)="isChanged = true"><br/>
+        <input
+        type="text"
+        placeholder="Description"
+        class="form-control"
+        [(ngModel)]="description"
+        (keyup)="isChanged = true" required><br/>
+        <input
+        type="text"
+        placeholder="Location"
+        class="form-control"
+        [(ngModel)]="location"
+        (keyup)="isChanged = true" required><br/>
+        <div class= "row" style ="text-align: center"><br/>
+          <div class="col-md-6">
+        Primary Color : <input
+        type="color"
+        [(ngModel)]="primaryColor"
+        (change)="isChanged = true"></div>
+        <div class='col-md-6'>
+        Secondary Color : <input
+      type="color"
+      [(ngModel)]="secondaryColor"
+      (change)="isChanged = true" required></div>
+    </div> 
+    <br/>
+    <input
+      class="form-control"
+      type="text"
+      mwlFlatpickr
+      [(ngModel)]="start"
+      (ngModelChange)="isChanged = true"
+      [altInput]="true"
+      [convertModelValue]="true"
+      [enableTime]="true"
+      dateFormat="Y-m-dTH:i"
+      altFormat="F j, Y H:i"
+      placeholder="Start Date/Time" required><br/>
+      <input
+      class="form-control"
+      type="text"
+      mwlFlatpickr
+      [(ngModel)]="end"
+      (ngModelChange)="isChanged = true"
+      [altInput]="true"
+      [convertModelValue]="true"
+      [enableTime]="true"
+      dateFormat="Y-m-dTH:i"
+      altFormat="F j, Y H:i"
+      placeholder="End Date/Time" required>  
+                
+   
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" *ngIf = "isCreate" class="btn btn-outline-secondary" (click)="createEvent();close()">Create</button>
+      
+      <button type="button" *ngIf = "isCreate" class="btn btn-outline-danger" (click)="close()">Cancel</button>
+
+      <button type="button" *ngIf = "isEdit" class="btn btn-outline-success" (click)="confirmEdit();close()">Edit</button>
+
+
+    </div>
+    <!-- </form> -->
+  </ng-template>
+  
+  <ng-template #deleteModal let-close="close">
+    <div class="modal-header" style  ="text-align:center">
+      <h5 class="modal-title">Cancel Meeting</h5>
+        <button type="button" class="close" (click)="close()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        
+                <h5>Are you sure to proceed?</h5>
+  
+    </div>
+    <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary" (click)="close()">cancel</button>
+      <button type="button" class="btn btn-outline-danger" (click)="confirmDelete();close()">Delete</button>
+    </div>
+  </ng-template>
+  
+
+  
+  <div class="container">
+      <div class="row text-center">
+    <div class="col-md-4">
+        
+        <i class="fa fa-chevron-left icons fa-lg"  *ngIf ="isAdmin" (click)="goBackToPreviousPage()" title ="Back"  aria-hidden="true"></i>
+        &nbsp;&nbsp;&nbsp;
+        <div class="btn-group">
+        <div
+          class="btn"
+          [ngClass] = "{'btn-info': date == 'previous','btn-secondary' : date != 'previous'}"
+          mwlCalendarPreviousView
+          [view]="view"
+          (click) ="date = 'previous'"
+          [(viewDate)]="viewDate"
+          (viewDateChange)="activeDayIsOpen = false">
+          Previous
+        </div>
+        <div
+          class="btn"
+          [ngClass] = "{'btn-info': date == 'today','btn-secondary' : date != 'today'}"
+          mwlCalendarToday
+          (click) ="date = 'today'"
+          [(viewDate)]="viewDate">
+          Today
+        </div>
+        <div
+          class="btn btn-secondary"
+          mwlCalendarNextView
+          [ngClass] = "{'btn-info': date == 'next','btn-secondary' : date != 'next'}"
+          (click) ="date ='next'"
+          [view]="view"
+          [(viewDate)]="viewDate"
+          (viewDateChange)="activeDayIsOpen = false">
+          Next
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
+    </div>
+    <div class="col-md-4">
+      <div class="btn-group">
+        <div class="btn"
+         [ngClass] = "{'btn-warning': view != 'month','btn-info' : view == 'month'}"
+          (click)="view = 'month'"
+          [class.active]="view === 'month'">
+          Month
+        </div>
+        <div class="btn"
+        [ngClass] = "{'btn-warning':view != 'week','btn-info' : view == 'week'}"
+          (click)="view = 'week'"
+          [class.active]="view === 'week'">
+          Week
+        </div>
+        <div class="btn"
+        [ngClass] = "{'btn-info':view =='day','btn-warning' : view != 'day'}"
+          (click)="view = 'day'"
+          [class.active]="view === 'day'">
+          Day
+        </div>
+      </div> &nbsp;&nbsp;&nbsp;
+      <i class="fa fa-calendar-plus-o icons fa-lg"  *ngIf ="isAdmin" (click)="addEvent()"  title ="New Meeting" aria-hidden="true"></i>
+    </div>
+  </div>
+  <br/>
+<div *ngIf="events$ | async ; else loading; let events"> 
+  <div [ngSwitch]="view">
+    <mwl-calendar-month-view
+      *ngSwitchCase="'month'"
+      [viewDate]="viewDate"
+      [events]="events"
+      [activeDayIsOpen]="activeDayIsOpen"
+      (dayClicked)="dayClicked($event.day)"
+      (eventClicked)="eventClicked($event.event)">
+    </mwl-calendar-month-view>
+    <mwl-calendar-week-view
+      *ngSwitchCase="'week'"
+      [viewDate]="viewDate"
+      [events]="events"
+      (eventClicked)="eventClicked($event.event)">
+    </mwl-calendar-week-view>
+    <mwl-calendar-day-view
+      *ngSwitchCase="'day'"
+      [viewDate]="viewDate"
+      [events]="events"
+      (eventClicked)="eventClicked($event.event)">
+    </mwl-calendar-day-view>
+  </div>
+</div>
+  <br><br><br>
+</div>
+<ng-template #reminderModal let-close="close">
+  <div class="modal-header" style  ="text-align:center">
+    <h5 class="modal-title">Reminder</h5>
+      <button type="button" class="close" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+  <div class="modal-body">
+      {{notification.data.msg}}
+    </div>
+    <div class="modal-footer">
+      <button type="button"  class="btn btn-outline-warning" (click)="snoozeReminder();close()">Snooze</button>
+      <button type="button"  class="btn btn-outline-success"  *ngIf ="!isSnooze" (click)="close()">Ok</button>
+      <button type="button"  class="btn btn-outline-success"  *ngIf ="isSnooze" (click)="dismissSnooze(notification.data.title);close()">Dismiss</button>
+    </div>
+  </ng-template>
